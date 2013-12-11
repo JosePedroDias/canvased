@@ -24,7 +24,7 @@ var prepare = function() {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.8],
         [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.25],
         [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1.3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.94, 0.92],
+        [1.4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0.9, 0.9],
         [1.3, 1, 1, 1, 7, 1, 1, 1, 1, 1]
     ];
 
@@ -33,8 +33,8 @@ var prepare = function() {
         ['\\', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\'', '«', 'bksp'],
         ['tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '+', '´', 'ret'],
         ['caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ç', 'º', '~', 'ret'],
-        ['sh', '<', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '-', 'sh', '/\\', undefined],
-        ['ctr', 'fn', 'win', 'alt', ' ', 'alt gr', 'ctr', '<', '\\/', '>']
+        ['sh', '<', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '-', undefined, '/\\', 'sh'],
+        ['ctr', 'fn', 'meta', 'alt', ' ', 'alt gr', 'ctr', '<', '\\/', '>']
     ];
 
     var codes = [
@@ -42,8 +42,8 @@ var prepare = function() {
         ['\\', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\'', '«', 'bksp'],
         ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '+', '´', 'ret'],
         ['caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ç', 'º', '~', 'ret'],
-        ['sh', '<', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-', 'sh', 'up', undefined],
-        ['ctr', 'fn', 'win', 'alt', ' ', 'alt gr', 'ctr', 'left', 'down', 'right']
+        ['sh', '<', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-', undefined, 'up', 'sh'],
+        ['ctr', 'fn', 'meta', 'alt', ' ', 'alt gr', 'ctr', 'left', 'down', 'right']
     ];
 
     var sum = function(prev, v) { return prev + v; };
@@ -112,7 +112,7 @@ var state = {
     history: [],
     shiftIsDown: false,
     ctrlIsDown:  false,
-    winIsDown:   false,
+    metaIsDown:   false,
     altIsDown:   false,
     capsIsOn:    false
 };
