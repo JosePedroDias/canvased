@@ -17,27 +17,33 @@ ctx.textBaseline = 'middle';
 var I, cells = [];
 
 var prepare = function() {
-    var X, Y = 4;
+    var X, Y = 6;
 
     var layout = [
-        [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.25],
-        [1.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.9],
-        [2.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5],
-        [1.5, 1.5, 7, 1.5, 1.5]
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.8],
+        [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.25],
+        [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1.3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.94, 0.92],
+        [1.3, 1, 1, 1, 7, 1, 1, 1, 1, 1]
     ];
 
     var labels = [
-        ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'bksp'],
-        ['a/1', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ret'],
-        ['sh', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', 'sh'],
-        ['ctr', 'alt', 'spc', 'alt', 'ctr']
+        ['esc', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'ins', 'del'],
+        ['\\', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\'', '«', 'bksp'],
+        ['tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '+', '´', 'ret'],
+        ['caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ç', 'º', '~', 'ret'],
+        ['sh', '<', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '-', 'sh', '/\\', undefined],
+        ['ctr', 'fn', 'win', 'alt', ' ', 'alt gr', 'ctr', '<', '\\/', '>']
     ];
 
     var codes = [
-        ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'bksp'],
-        ['a/1', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ret'],
-        ['sh', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', 'sh'],
-        ['ctr', 'alt', 'spc', 'alt', 'ctr']
+        ['esc', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10', 'f11', 'f12', 'ins', 'del'],
+        ['\\', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\'', '«', 'bksp'],
+        ['tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '+', '´', 'ret'],
+        ['caps', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ç', 'º', '~', 'ret'],
+        ['sh', '<', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-', 'sh', 'up', undefined],
+        ['ctr', 'fn', 'win', 'alt', ' ', 'alt gr', 'ctr', 'left', 'down', 'right']
     ];
 
     var sum = function(prev, v) { return prev + v; };
@@ -55,13 +61,15 @@ var prepare = function() {
         X = rowLayout.reduce(sum, 0);
         for (x = 0; x < rowLayout.length; ++x) {
             w = W * (rowLayout[x] / X);
-            cells.push({
-                x0:r(x0+p), x1:r(x0+w-P),
-                y0:r(y0+p), y1:r(y0+h-P),
-                w:r(w-P), h:r(h-P),
-                l:rowLabels[x],
-                c:rowCodes[x]
-            });
+            if (rowCodes[x] !== undefined) {
+                cells.push({
+                    x0:r(x0+p), x1:r(x0+w-P),
+                    y0:r(y0+p), y1:r(y0+h-P),
+                    w:r(w-P), h:r(h-P),
+                    l:rowLabels[x],
+                    c:rowCodes[x]
+                });
+            }
             x0 += w;
         }
         x0 = 0;
@@ -99,6 +107,16 @@ var findCell = function(x, y) {
 
 var pointerDown = {}; // pointerId -> Boolean
 var cellsDown = {}; // pointerId -> cell
+
+var state = {
+    history: [],
+    shiftIsDown: false,
+    ctrlIsDown:  false,
+    winIsDown:   false,
+    altIsDown:   false,
+    capsIsOn:    false
+};
+
 
 var eqObj = function(a, b) {
     return JSON.stringify(a) === JSON.stringify(b);
